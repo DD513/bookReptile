@@ -4,13 +4,14 @@
   "description": "reptile",
   "main": "index.js",
   "scripts": {
-    "start": "node readBookUrl.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "DD",
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.1",
+    "axios": "^0.21.4",
     "cheerio": "^1.0.0-rc.10",
     "lodash": "^4.17.21",
     "mysql": "^2.18.1",

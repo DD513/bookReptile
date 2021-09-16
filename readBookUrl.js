@@ -1,5 +1,5 @@
 // import reptileISBN from './readInfoISBN';
-const reptileISBN = require('./readInfoISBN');
+const books = require('./readInfoISBN');
 
 const request = require("request");
 const cheerio = require("cheerio");
@@ -33,7 +33,7 @@ const bookdata =async() => {
         console.log('nono',bookurl);
       }
       console.log('ans',bookurllist);
-      reptileISBN.bookISBN(bookurllist);
+      reptileISBN.book(bookurllist);
   });
 };
 
