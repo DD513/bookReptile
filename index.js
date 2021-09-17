@@ -19,10 +19,8 @@ const bookdata =async() => {
       const $ = cheerio.load(body);
       const list = $(".displaycontent .module_display1 .displaycol .displayunit");
       for (let i = 0; i < list.length; i++) {
-        console.log(i)
         const bookurl =list.eq(i).find('.division1 .beta_display .pdnamebox a').attr('href');
-        // const ISBN =await bookISBN(bookurl,i);
-        ISBN= '12345678';
+        const ISBN = await bookISBN(bookurl,i);
         const name = list.eq(i).find('.pdnamebox').text();
         const author = list.eq(i).find('.basic2box .author a').text();
         const cover = list.eq(i).find('.alpha_display .coverbox a').children('img').attr('data-src');
@@ -30,8 +28,9 @@ const bookdata =async() => {
         booklist.push({ ISBN, name , author , cover , abstract });
         await createBook(booklist[i]);
       }
-      console.log('nono',booklist);
       // getBook();
+      console.log('zz',booklist)
+      
       return booklist;
   });
   
@@ -39,21 +38,25 @@ const bookdata =async() => {
 
 const bookISBN =async(bookurl,i) => {
   let ISBN ;
-  request({
-    url: `https://www.kingstone.com.tw/${bookurl}`,
-    method: "GET"
-  },async(error, res, body) => {
-    // 如果有錯誤訊息，或沒有 body(內容)，就 return
-    if (error || !body) {
-        return url;
-    }
-
-    const $ = cheerio.load(body);
-    const info = $(".tablebox_deda .table_1col_deda");
-    ISBN =info.eq(i).find('.table_1unit_deda:nth-child(2) li:nth-child(4)').text();
-    console.log("haha",ISBN,bookurl,'我是i',i);
+  return new Promise(function (resolve, reject) {
+    request({
+      url: `https://www.kingstone.com.tw/${bookurl}`,
+      method: "GET"
+    },async(error, res, body) => {
+      // 如果有錯誤訊息，或沒有 body(內容)，就 return
+      if (error || !body) {
+          reject();
+      }
+  
+      const $ = cheerio.load(body);
+      const info = $(".tablebox_deda .table_1col_deda");
+      ISBN =info.eq(0).find('.table_1unit_deda:nth-child(2) li:nth-child(4)').text();
+      console.log("haha",ISBN,bookurl,'我是i',i);
+      resolve(ISBN);
+    })
+    
   })
-  return ISBN;
 }
 
 bookdata();
+
